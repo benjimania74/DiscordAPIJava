@@ -1,0 +1,27 @@
+package fr.benjimania74.daj.gateway.opcode;
+
+import org.json.simple.JSONObject;
+
+import java.io.IOException;
+
+public class Identify extends OPCode{
+    public Identify(int code, OPCodeManager opCodeManager) {
+        super(2, opCodeManager);
+    }
+
+    @Override
+    public void perform(int s, String t, JSONObject dReceived) throws IOException {
+        JSONObject toSend = new JSONObject();
+        toSend.put("op", getCode());
+
+        JSONObject d = new JSONObject();
+        d.put("token", getOpCodeManager().getGateway().getToken());
+
+        JSONObject properties = new JSONObject();
+        properties.put("os", System.getProperties().get("os.name"));
+        properties.put("browser", "DiscordAPIJava");
+        properties.put("device", "DiscordAPIJava");
+
+        d.put("prperties", properties);
+    }
+}
