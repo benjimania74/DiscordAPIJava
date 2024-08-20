@@ -17,6 +17,7 @@ public class OPCodeManager {
     private final HashMap<Integer, OPCode> opCodes;
 
     private boolean isHeartBeating = false;
+    public void hasHeartbeated(){isHeartBeating = true;}
     private boolean heartbeatACK = false;
     public void gotHeartbeatACK(){heartbeatACK = true;}
 
@@ -46,15 +47,13 @@ public class OPCodeManager {
         });
     }
 
-    public boolean callOPCode(int code, int s, String t, JSONObject d) throws IOException {
+    public void callOPCode(int code, int s, String t, JSONObject d) throws IOException {
         if(this.opCodes.containsKey(code)){
             this.opCodes.get(code).perform(s, t, d);
             if(code == 0){
                 lastSequenceEvent = s;
             }
-            return true;
         }
-        return false;
     }
 
     public void heartBeat(long time){
@@ -63,11 +62,11 @@ public class OPCodeManager {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(time);
                     heartbeatACK = false;
                     if(gateway.isConnected()) {
                         callOPCode(1, 0, null, null);
                     }
+                    Thread.sleep(time);
                 } catch (IOException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }

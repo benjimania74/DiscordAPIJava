@@ -5,11 +5,10 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 
+@Getter
 public abstract class OPCode {
-    @Getter
     public final int code;
 
-    @Getter
     public final OPCodeManager opCodeManager;
 
     public OPCode(int code, OPCodeManager opCodeManager){

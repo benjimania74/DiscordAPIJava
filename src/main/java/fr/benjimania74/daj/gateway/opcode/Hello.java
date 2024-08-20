@@ -12,7 +12,12 @@ public class Hello extends OPCode{
     @Override
     public void perform(int s, String t, JSONObject d) throws IOException {
         long hbTime = (long) d.get("heartbeat_interval");
-        getOpCodeManager().heartBeat(hbTime);
+        getOpCodeManager().heartBeat((long) (hbTime*0.9));
+        try {
+            Thread.sleep(500);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
         getOpCodeManager().callOPCode(2,0,null, null);
     }
 }

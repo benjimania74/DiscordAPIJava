@@ -16,7 +16,6 @@ public class HeartBeat extends OPCode{
         obj.put("op", getCode());
         obj.put("d", (lastSequenceEvent == -1 ? null : lastSequenceEvent));
         opCodeManager.getGateway().sendMessage(obj.toJSONString());
-
-        System.out.println("HB");
+        opCodeManager.hasHeartbeated();
     }
 }
