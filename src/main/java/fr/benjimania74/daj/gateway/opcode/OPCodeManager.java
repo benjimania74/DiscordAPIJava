@@ -12,9 +12,6 @@ import java.util.*;
 
 public class OPCodeManager {
     @Getter
-    private static OPCodeManager instance;
-
-    @Getter
     private final Gateway gateway;
 
     private final HashMap<Integer, OPCode> opCodes;
@@ -30,8 +27,6 @@ public class OPCodeManager {
         this.gateway = gateway;
         opCodes = new HashMap<>();
         registerOPCode();
-
-        instance = this;
     }
 
     private void registerOPCode(){
@@ -64,16 +59,15 @@ public class OPCodeManager {
 
     public void heartBeat(long time){
         if(isHeartBeating || time <= 0){return;}
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {throw new RuntimeException(e);}
         Thread heartbeat = new Thread(new Runnable() {
             @Override
             public void run() {
-                heartbeatACK = false;
                 try {
-                    callOPCode(1, 0, null, null);
                     Thread.sleep(time);
+                    heartbeatACK = false;
+                    if(gateway.isConnected()) {
+                        callOPCode(1, 0, null, null);
+                    }
                 } catch (IOException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }

@@ -20,7 +20,7 @@ public class WSClient {
         WebSocketClient ws = new WebSocketClient();
         ws.start();
 
-        Future<Session> fut = ws.connect(new WSListener(), uri);
+        Future<Session> fut = ws.connect(new WSListener(gateway), uri);
         session = fut.get(5, TimeUnit.SECONDS);
     }
 

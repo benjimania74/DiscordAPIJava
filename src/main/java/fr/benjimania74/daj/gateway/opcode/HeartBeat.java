@@ -12,9 +12,11 @@ public class HeartBeat extends OPCode{
     @Override
     public void perform(int s, String t, JSONObject d) throws IOException {
         JSONObject obj = new JSONObject();
-        int lastSequenceEvent = OPCodeManager.getInstance().getLastSequenceEvent();
+        int lastSequenceEvent = getOpCodeManager().getLastSequenceEvent();
         obj.put("op", getCode());
         obj.put("d", (lastSequenceEvent == -1 ? null : lastSequenceEvent));
         opCodeManager.getGateway().sendMessage(obj.toJSONString());
+
+        System.out.println("HB");
     }
 }

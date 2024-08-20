@@ -1,6 +1,6 @@
 package fr.benjimania74.daj.gateway.websocket;
 
-import fr.benjimania74.daj.gateway.opcode.OPCodeManager;
+import fr.benjimania74.daj.gateway.Gateway;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.json.simple.JSONObject;
@@ -10,7 +10,13 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 public class WSListener implements WebSocketListener {
+    private final Gateway gateway;
+
     private JSONParser parser = new JSONParser();
+
+    public WSListener(Gateway gateway){
+        this.gateway = gateway;
+    }
 
     @Override
     public void onWebSocketBinary(byte[] bytes, int i, int i1) {
@@ -34,11 +40,11 @@ public class WSListener implements WebSocketListener {
 
         if(opcode == 0){
             t = (String) object.get("t");
-            s = (int) object.get("s");
+            s = Integer.parseInt(String.valueOf((long) object.get("s")));
         }
 
         try {
-            OPCodeManager.getInstance().callOPCode(opcode, s, t, d);
+            gateway.getOpCodeManager().callOPCode(opcode, s, t, d);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

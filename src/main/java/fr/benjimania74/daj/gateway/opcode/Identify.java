@@ -9,6 +9,7 @@ public class Identify extends OPCode{
         super(2, opCodeManager);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void perform(int s, String t, JSONObject dReceived) throws IOException {
         JSONObject toSend = new JSONObject();
@@ -22,6 +23,11 @@ public class Identify extends OPCode{
         properties.put("browser", "DiscordAPIJava");
         properties.put("device", "DiscordAPIJava");
 
-        d.put("prperties", properties);
+        d.put("properties", properties);
+
+        d.put("intents", getOpCodeManager().getGateway().getIntentValues());
+
+        toSend.put("d", d);
+        getOpCodeManager().getGateway().sendMessage(toSend.toJSONString());
     }
 }
