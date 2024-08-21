@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit;
 public class WSClient {
     private final Gateway gateway;
     private final Session session;
-    private ArrayList<String> toSendQueue = new ArrayList<>();
+    private final ArrayList<String> toSendQueue = new ArrayList<>();
 
-    public WSClient(Gateway gateway) throws Exception {
+    public WSClient(Gateway gateway, boolean resume) throws Exception {
         this.gateway = gateway;
-        URI uri = URI.create("wss://gateway.discord.gg/?v=" + gateway.getAPI_VERSION() + "&encoding=json");
+        URI uri = URI.create((resume ? gateway.getResumeGateURL() : gateway.getGateway()) + "/?v=" + gateway.getAPI_VERSION() + "&encoding=json");
 
         WebSocketClient ws = new WebSocketClient();
         ws.setMaxTextMessageBufferSize(100 << 10);

@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 public class Gateway {
     private final OPCodeManager opCodeManager;
 
+    private final String gateway = "wss://gateway.discord.gg";
+
+    private String sessionID;
+    private String resumeGateURL;
+
     private final String token;
     private Status status = Status.DND;
     private boolean afk = false;
@@ -22,7 +27,7 @@ public class Gateway {
     private String activityURL = "https://discord.dev";
     private ActivityType activityType = ActivityType.CUSTOM;
 
-    private final WSClient client;
+    private WSClient client;
     private final int intentValues;
 
     private final String API_VERSION = "10";
@@ -33,7 +38,7 @@ public class Gateway {
         this.token = token;
         this.intentValues = Intents.calculate(intents);
 
-        client = new WSClient(this);
+        client = new WSClient(this, false);
     }
 
     public Gateway(String token, Intents... intents) throws Exception {
@@ -50,5 +55,11 @@ public class Gateway {
 
     public void close(){
         client.close();
+    }
+
+    public void resumeConnection() throws Exception {
+        if(this.getResumeGateURL() == null){return;}
+        if(this.isConnected()){this.close();}
+        this.client = new WSClient(this, true);
     }
 }
