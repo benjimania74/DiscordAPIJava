@@ -1,5 +1,6 @@
 package fr.benjimania74.daj.gateway.opcode;
 
+import fr.benjimania74.daj.gateway.Gateway;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -10,21 +11,24 @@ public class PresenceUpdate extends OPCode {
         super(3, opCodeManager);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void perform(int s, String t, JSONObject d) throws IOException {
+        Gateway gateway = getOpCodeManager().getGateway();
+
         JSONObject toSend = new JSONObject();
         toSend.put("op", getCode());
 
         JSONObject presence = new JSONObject();
-        presence.put("since", null);
-        presence.put("status", "dnd");
-        presence.put("afk", false);
+        presence.put("since", System.currentTimeMillis()/1000L);
+        presence.put("status", gateway.getStatus().toString());
+        presence.put("afk", gateway.isAfk());
 
         JSONObject activity = new JSONObject();
-        activity.put("name", "Je suis connecté !");
-        activity.put("type", 4);
-        activity.put("details", "Test");
-        activity.put("state", "Bonjour :)");
+        activity.put("name", gateway.getActivityName());
+        activity.put("type", gateway.getActivityType().getId());
+        activity.put("url", gateway.getActivityURL());
+        activity.put("state", gateway.getState());
 
         JSONArray activities = new JSONArray();
         activities.add(activity);
@@ -32,7 +36,6 @@ public class PresenceUpdate extends OPCode {
 
         toSend.put("d", presence);
 
-        System.out.println(toSend.toJSONString());
-        getOpCodeManager().getGateway().sendMessage(toSend.toJSONString());
+        gateway.sendMessage(toSend.toJSONString());
     }
 }

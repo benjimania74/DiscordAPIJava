@@ -3,17 +3,25 @@ package fr.benjimania74.daj.gateway;
 import fr.benjimania74.daj.gateway.opcode.OPCodeManager;
 import fr.benjimania74.daj.gateway.websocket.WSClient;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@Getter
+@Getter @Setter
 public class Gateway {
     private final OPCodeManager opCodeManager;
 
     private final String token;
+    private Status status = Status.DND;
+    private boolean afk = false;
+    private String activityName = "Name";
+    private String state = "State";
+    private String activityURL = "https://discord.dev";
+    private ActivityType activityType = ActivityType.CUSTOM;
+
     private final WSClient client;
     private final int intentValues;
 
