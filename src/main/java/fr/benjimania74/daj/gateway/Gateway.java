@@ -24,12 +24,12 @@ public class Gateway {
     private String resumeGateURL;
 
     private final String token;
-    private Status status = Status.DND;
+    private Status status = Status.ONLINE;
     private boolean afk = false;
-    private String activityName = "Name";
-    private String state = "State";
-    private String activityURL = "https://discord.dev";
-    private ActivityType activityType = ActivityType.CUSTOM;
+    private String activityName = "";
+    private String state = "";
+    private String activityURL = "";
+    private ActivityType activityType = ActivityType.PLAYING;
 
     private WSClient client;
     private final int intentValues;
@@ -61,6 +61,11 @@ public class Gateway {
 
     public void close(){
         client.close();
+    }
+
+    public void reconnect() throws Exception {
+        if(this.isConnected()){return;}
+        client = new WSClient(this, sessionID != null);
     }
 
     public void resumeConnection() throws Exception {

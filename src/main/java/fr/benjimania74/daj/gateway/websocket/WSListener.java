@@ -60,8 +60,12 @@ public class WSListener implements WebSocketListener {
 
     @Override
     public void onWebSocketClose(int i, String s) {
-        System.out.println("Connection closed");
-        System.out.println(i + " : " + s);
+        DisconnectCode dc = DisconnectCode.getFromCode(i);
+        try {
+            throw new DisconnectException(dc.getMessage(), (dc.canReconnect ? gateway : null));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
