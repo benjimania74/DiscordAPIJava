@@ -11,6 +11,10 @@ public class Reconnect extends OPCode {
 
     @Override
     public void perform(JSONObject info) throws IOException {
-
+        try {
+            getOpCodeManager().getGateway().reconnect();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

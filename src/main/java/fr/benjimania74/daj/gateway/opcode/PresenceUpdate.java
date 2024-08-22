@@ -14,12 +14,10 @@ public class PresenceUpdate extends OPCode {
     @SuppressWarnings("unchecked")
     @Override
     public void perform(JSONObject info) throws IOException {
-        Gateway gateway = getOpCodeManager().getGateway();
-
         JSONObject toSend = new JSONObject();
         toSend.put("op", getCode());
 
-        JSONObject presence = new JSONObject();
+        /*JSONObject presence = new JSONObject();
         presence.put("since", System.currentTimeMillis()/1000L);
         presence.put("status", gateway.getStatus().toString());
         presence.put("afk", gateway.isAfk());
@@ -32,9 +30,9 @@ public class PresenceUpdate extends OPCode {
 
         JSONArray activities = new JSONArray();
         activities.add(activity);
-        presence.put("activities", activities);
+        presence.put("activities", activities);*/
 
-        toSend.put("d", presence);
+        toSend.put("d", info);
 
         sendJSON(toSend);
     }

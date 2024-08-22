@@ -35,7 +35,14 @@ public class WSListener implements WebSocketListener {
             throw new RuntimeException(e);
         }
         int opcode = Integer.parseInt(String.valueOf((long) object.get("op")));
-        JSONObject d = (JSONObject) object.get("d");
+
+        JSONObject d;
+        if(opcode == 9){
+            d = new JSONObject();
+            d.put("continue", object.get("d"));
+        }else {
+            d = (JSONObject) object.get("d");
+        }
 
         try {
             if(opcode == 0){
@@ -44,6 +51,7 @@ public class WSListener implements WebSocketListener {
                 gateway.getOpCodeManager().callEvent(s,t,d);
                 return;
             }
+
             gateway.getOpCodeManager().callOPCode(opcode, d);
         } catch (IOException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
