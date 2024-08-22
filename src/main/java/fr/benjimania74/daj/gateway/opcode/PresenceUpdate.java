@@ -13,7 +13,7 @@ public class PresenceUpdate extends OPCode {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void perform(int s, String t, JSONObject d) throws IOException {
+    public void perform(JSONObject received) throws IOException {
         Gateway gateway = getOpCodeManager().getGateway();
 
         JSONObject toSend = new JSONObject();

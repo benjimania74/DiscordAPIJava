@@ -1,5 +1,7 @@
 package fr.benjimania74.daj.gateway;
 
+import fr.benjimania74.daj.bot.DAJ;
+import fr.benjimania74.daj.gateway.event.EventManager;
 import fr.benjimania74.daj.gateway.opcode.OPCodeManager;
 import fr.benjimania74.daj.gateway.websocket.WSClient;
 import lombok.Getter;
@@ -12,7 +14,9 @@ import java.util.stream.Collectors;
 
 @Getter @Setter
 public class Gateway {
+    private final DAJ daj;
     private final OPCodeManager opCodeManager;
+    private final EventManager eventManager;
 
     private final String gateway = "wss://gateway.discord.gg";
 
@@ -32,8 +36,10 @@ public class Gateway {
 
     private final String API_VERSION = "10";
 
-    public Gateway(String token, Collection<Intents> intents) throws Exception {
+    public Gateway(DAJ daj, String token, Collection<Intents> intents) throws Exception {
+        this.daj = daj;
         opCodeManager = new OPCodeManager(this);
+        eventManager = new EventManager(this);
 
         this.token = token;
         this.intentValues = Intents.calculate(intents);
@@ -41,8 +47,8 @@ public class Gateway {
         client = new WSClient(this, false);
     }
 
-    public Gateway(String token, Intents... intents) throws Exception {
-        this(token, Arrays.stream(intents).collect(Collectors.toList()));
+    public Gateway(DAJ daj, String token, Intents... intents) throws Exception {
+        this(daj, token, Arrays.stream(intents).collect(Collectors.toList()));
     }
 
     public void sendMessage(String message) throws IOException {

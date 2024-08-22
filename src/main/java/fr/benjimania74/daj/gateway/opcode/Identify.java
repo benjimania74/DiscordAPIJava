@@ -11,7 +11,7 @@ public class Identify extends OPCode{
 
     @SuppressWarnings("unchecked")
     @Override
-    public void perform(int s, String t, JSONObject dReceived) throws IOException {
+    public void perform(JSONObject received) throws IOException {
         JSONObject toSend = new JSONObject();
         toSend.put("op", getCode());
 

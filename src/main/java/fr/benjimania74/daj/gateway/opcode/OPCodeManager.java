@@ -42,18 +42,21 @@ public class OPCodeManager {
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
-                this.opCodes.put(instance.code, instance);
+                this.opCodes.put(instance.getCode(), instance);
             }
         });
     }
 
-    public void callOPCode(int code, int s, String t, JSONObject d) throws IOException {
+    public void callOPCode(int code, JSONObject d) throws IOException {
         if(this.opCodes.containsKey(code)){
-            this.opCodes.get(code).perform(s, t, d);
-            if(code == 0){
-                lastSequenceEvent = s;
-            }
+            this.opCodes.get(code).perform(d);
         }
+    }
+
+    // Dispatch OPCode
+    public void callEvent(int s, String eventName, JSONObject details) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        this.lastSequenceEvent = s;
+        gateway.getEventManager().callEvent(eventName, details);
     }
 
     public void heartBeat(long time){
@@ -64,7 +67,7 @@ public class OPCodeManager {
                 try {
                     heartbeatACK = false;
                     if(gateway.isConnected()) {
-                        callOPCode(1, 0, null, null);
+                        callOPCode(1, null);
                     }
                     Thread.sleep(time);
                 } catch (IOException | InterruptedException e) {

@@ -9,8 +9,22 @@ public class RequestGuildMembers extends OPCode{
         super(8, opCodeManager);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void perform(int s, String t, JSONObject d) throws IOException {
+    public void perform(JSONObject received) throws IOException {
+        JSONObject toSend = new JSONObject();
 
+        toSend.put("op", getCode());
+
+        JSONObject d = new JSONObject();
+
+        d.put("guild_id", "ID");
+        d.put("query", "");
+        d.put("limit", 0);
+        d.put("user_ids", "ID"); // ou JSONArray d'ID
+
+        toSend.put("d", d);
+
+        getOpCodeManager().getGateway().sendMessage(toSend.toJSONString());
     }
 }

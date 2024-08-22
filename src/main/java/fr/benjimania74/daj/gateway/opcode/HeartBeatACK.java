@@ -8,7 +8,7 @@ public class HeartBeatACK extends OPCode{
     }
 
     @Override
-    public void perform(int s, String t, JSONObject d) {
+    public void perform(JSONObject received) {
         getOpCodeManager().gotHeartbeatACK();
     }
 }

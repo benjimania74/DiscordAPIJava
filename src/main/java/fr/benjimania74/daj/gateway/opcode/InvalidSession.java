@@ -10,7 +10,7 @@ public class InvalidSession extends OPCode{
     }
 
     @Override
-    public void perform(int s, String t, JSONObject d) throws IOException {
+    public void perform(JSONObject received) throws IOException {
 
     }
 }

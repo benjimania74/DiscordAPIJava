@@ -8,11 +8,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public class WSListener implements WebSocketListener {
     private final Gateway gateway;
 
-    private JSONParser parser = new JSONParser();
+    private final JSONParser parser = new JSONParser();
 
     public WSListener(Gateway gateway){
         this.gateway = gateway;
@@ -35,17 +36,16 @@ public class WSListener implements WebSocketListener {
         }
         int opcode = Integer.parseInt(String.valueOf((long) object.get("op")));
         JSONObject d = (JSONObject) object.get("d");
-        String t = null;
-        int s = -1;
-
-        if(opcode == 0){
-            t = (String) object.get("t");
-            s = Integer.parseInt(String.valueOf((long) object.get("s")));
-        }
 
         try {
-            gateway.getOpCodeManager().callOPCode(opcode, s, t, d);
-        } catch (IOException e) {
+            if(opcode == 0){
+                String t = (String) object.get("t");
+                int s = Integer.parseInt(String.valueOf((long) object.get("s")));
+                gateway.getOpCodeManager().callEvent(s,t,d);
+                return;
+            }
+            gateway.getOpCodeManager().callOPCode(opcode, d);
+        } catch (IOException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
