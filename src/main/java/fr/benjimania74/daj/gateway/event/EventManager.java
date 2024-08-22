@@ -25,6 +25,5 @@ public class EventManager {
         Constructor<?> constructor = optionalConstructor.get();
 
         gateway.getDaj().callListener((Event) constructor.newInstance(details));
-        //LISTERNER(constructor.newInstance(details));
     }
 }

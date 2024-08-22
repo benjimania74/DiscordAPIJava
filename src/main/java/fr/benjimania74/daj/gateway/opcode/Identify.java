@@ -11,7 +11,7 @@ public class Identify extends OPCode{
 
     @SuppressWarnings("unchecked")
     @Override
-    public void perform(JSONObject received) throws IOException {
+    public void perform(JSONObject info) throws IOException {
         JSONObject toSend = new JSONObject();
         toSend.put("op", getCode());
 
@@ -28,6 +28,7 @@ public class Identify extends OPCode{
         d.put("intents", getOpCodeManager().getGateway().getIntentValues());
 
         toSend.put("d", d);
-        getOpCodeManager().getGateway().sendMessage(toSend.toJSONString());
+        sendJSON(toSend);
+        getOpCodeManager().callOPCode(3, null);
     }
 }

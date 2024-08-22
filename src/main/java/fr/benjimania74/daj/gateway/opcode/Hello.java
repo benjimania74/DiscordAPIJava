@@ -10,8 +10,8 @@ public class Hello extends OPCode{
     }
 
     @Override
-    public void perform(JSONObject received) throws IOException {
-        long hbTime = (long) received.get("heartbeat_interval");
+    public void perform(JSONObject info) throws IOException {
+        long hbTime = (long) info.get("heartbeat_interval");
         getOpCodeManager().heartBeat((long) (hbTime*0.9));
         try {
             Thread.sleep(500);

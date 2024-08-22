@@ -16,7 +16,7 @@ public abstract class OPCode {
         this.opCodeManager = opCodeManager;
     }
 
-    public abstract void perform(JSONObject received) throws IOException;
+    public abstract void perform(JSONObject info) throws IOException;
 
     public void sendJSON(JSONObject toSend) throws IOException {
         opCodeManager.getGateway().sendMessage(toSend.toJSONString());

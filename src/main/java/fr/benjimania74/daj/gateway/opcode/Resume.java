@@ -12,7 +12,7 @@ public class Resume extends OPCode {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void perform(JSONObject received) throws IOException {
+    public void perform(JSONObject info) throws IOException {
         Gateway gateway = getOpCodeManager().getGateway();
         try {
             gateway.resumeConnection();

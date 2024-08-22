@@ -11,20 +11,27 @@ public class RequestGuildMembers extends OPCode{
 
     @SuppressWarnings("unchecked")
     @Override
-    public void perform(JSONObject received) throws IOException {
+    public void perform(JSONObject info) throws IOException {
         JSONObject toSend = new JSONObject();
 
         toSend.put("op", getCode());
 
         JSONObject d = new JSONObject();
 
-        d.put("guild_id", "ID");
-        d.put("query", "");
+        d.put("guild_id", info.get("guild_id"));
         d.put("limit", 0);
-        d.put("user_ids", "ID"); // ou JSONArray d'ID
+        d.put("presences", info.get("online"));
+
+        if(info.get("users") != null){
+            d.put("user_ids", info.get("users"));
+        }else {
+            d.put("query", info.get("query"));
+        }
+
+        d.put("nonce", info.get("nonce"));
 
         toSend.put("d", d);
 
-        getOpCodeManager().getGateway().sendMessage(toSend.toJSONString());
+        sendJSON(toSend);
     }
 }

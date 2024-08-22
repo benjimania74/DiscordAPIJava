@@ -10,7 +10,7 @@ public class Reconnect extends OPCode {
     }
 
     @Override
-    public void perform(JSONObject received) throws IOException {
+    public void perform(JSONObject info) throws IOException {
 
     }
 }
