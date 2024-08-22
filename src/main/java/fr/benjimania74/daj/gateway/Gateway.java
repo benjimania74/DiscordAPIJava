@@ -47,10 +47,6 @@ public class Gateway {
         client = new WSClient(this, false);
     }
 
-    public Gateway(DAJ daj, String token, Intents... intents) throws Exception {
-        this(daj, token, Arrays.stream(intents).collect(Collectors.toList()));
-    }
-
     public void sendMessage(String message) throws IOException {
         client.sendMessage(message);
     }

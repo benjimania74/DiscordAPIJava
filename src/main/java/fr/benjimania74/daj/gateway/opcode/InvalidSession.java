@@ -16,7 +16,7 @@ public class InvalidSession extends OPCode{
                 throw new RuntimeException(e);
             }
         }else{
-            // CAN'T RECONNECT
+            System.out.println("Disconnected for Invalid Session");
         }
     }
 }

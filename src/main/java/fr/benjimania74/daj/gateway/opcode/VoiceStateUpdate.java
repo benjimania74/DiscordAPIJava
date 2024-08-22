@@ -11,6 +11,9 @@ public class VoiceStateUpdate extends OPCode{
 
     @Override
     public void perform(JSONObject info) throws IOException {
-
+        JSONObject toSend = new JSONObject();
+        toSend.put("op", getCode());
+        toSend.put("d", info);
+        sendJSON(toSend);
     }
 }
