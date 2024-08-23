@@ -29,6 +29,5 @@ public class Identify extends OPCode{
 
         toSend.put("d", d);
         sendJSON(toSend);
-        getOpCodeManager().callOPCode(3, null);
     }
 }
