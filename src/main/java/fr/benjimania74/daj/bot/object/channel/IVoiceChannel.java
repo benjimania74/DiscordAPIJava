@@ -1,6 +1,5 @@
 package fr.benjimania74.daj.bot.object.channel;
 
-import fr.benjimania74.daj.bot.object.RTCRegion;
 import lombok.Getter;
 
 import java.util.EnumSet;
@@ -28,6 +27,17 @@ public interface IVoiceChannel extends IChannel{
                 }
             }
             return AUTO;
+        }
+    }
+
+    @Getter
+    class RTCRegion {
+        private final String regionId;
+        private final String regionName;
+
+        public RTCRegion(String regionId, String regionName){
+            this.regionId = regionId;
+            this.regionName = regionName;
         }
     }
 }
