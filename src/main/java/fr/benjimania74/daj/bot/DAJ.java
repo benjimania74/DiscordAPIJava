@@ -2,7 +2,7 @@ package fr.benjimania74.daj.bot;
 
 import com.sun.istack.internal.NotNull;
 import fr.benjimania74.daj.bot.listener.EventHandler;
-import fr.benjimania74.daj.bot.listener.Listener;
+import fr.benjimania74.daj.bot.listener.IListener;
 import fr.benjimania74.daj.gateway.Gateway;
 import fr.benjimania74.daj.gateway.Intents;
 import fr.benjimania74.daj.gateway.event.Event;
@@ -17,7 +17,7 @@ public class DAJ {
 
     private Gateway gateway;
 
-    private final HashMap<Class<? extends Event>, HashMap<Method, Listener>> listenersMethods;
+    private final HashMap<Class<? extends Event>, HashMap<Method, IListener>> listenersMethods;
 
     public DAJ(@NotNull String token, @NotNull Collection<Intents> intents) {
         this.instance = this;
@@ -38,20 +38,20 @@ public class DAJ {
     }
 
     @SuppressWarnings("unchecked")
-    public void registerListener(@NotNull Listener listener){
+    public void registerListener(@NotNull IListener listener){
         Arrays.stream(listener.getClass().getDeclaredMethods())
                 .filter(method -> method.getAnnotation(EventHandler.class) != null &&
                         method.getParameters().length == 1 &&
                         Event.class.isAssignableFrom(method.getParameterTypes()[0]))
                 .forEach(method -> {
                     Class<?> eventClass = method.getParameterTypes()[0];
-                    HashMap<Method, Listener> methods = listenersMethods.getOrDefault(eventClass, new HashMap<>());
+                    HashMap<Method, IListener> methods = listenersMethods.getOrDefault(eventClass, new HashMap<>());
                     methods.put(method, listener);
                     if(methods.size() == 1){ listenersMethods.put((Class<? extends Event>) eventClass, methods); }
                 });
     }
 
-    public void unregisterListener(@NotNull Listener listener){
+    public void unregisterListener(@NotNull IListener listener){
         Arrays.stream(listener.getClass().getDeclaredMethods())
                 .filter(method -> method.getAnnotation(EventHandler.class) != null &&
                         method.getParameters().length == 1 &&
